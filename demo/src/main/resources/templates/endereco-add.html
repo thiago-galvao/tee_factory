@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Adicionar Pessoa</title>
+    <title>Adicionar Endereço</title>
 
     <!-- Bootstrap opcional -->
     <link rel="stylesheet"
@@ -12,7 +12,7 @@
 
 <div class="container mt-5">
 
-    <h2>Adicionar Pessoa</h2>
+    <h2>Adicionar Endereço</h2>
 
     <!-- Mensagem de sucesso -->
     <div class="alert alert-success"
@@ -21,31 +21,7 @@
     </div>
 
     <!-- Formulário -->
-    <form th:action="@{/pessoa/add}" method="post">
-
-        <!-- Dados da Pessoa -->
-        <div class="form-group">
-            <label for="nome">Nome</label>
-            <input type="text"
-                   id="nome"
-                   name="nome"
-                   class="form-control"
-                   placeholder="Digite o nome"
-                   required>
-        </div>
-
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email"
-                   id="email"
-                   name="email"
-                   class="form-control"
-                   placeholder="Digite o email"
-                   required>
-        </div>
-
-        <!-- Dados do Endereço -->
-        <h4 class="mt-4">Endereço</h4>
+    <form th:action="@{/endereco/add}" method="post">
 
         <div class="form-group">
             <label for="rua">Rua</label>
@@ -77,11 +53,22 @@
                    required>
         </div>
 
+        <div class="form-group">
+            <label for="cliente">Cliente</label>
+            <select id="cliente" name="clienteId" class="form-control" required>
+                <option value="" disabled selected>Selecione um cliente</option>
+                <option th:each="cliente : ${clientes}"
+                        th:value="${cliente.id}"
+                        th:text="${cliente.nome + ' (' + cliente.email + ')'}">
+                </option>
+            </select>
+        </div>
+
         <button type="submit" class="btn btn-primary">
             Salvar
         </button>
 
-        <a th:href="@{/pessoa}" class="btn btn-secondary">
+        <a th:href="@{/endereco}" class="btn btn-secondary">
             Voltar
         </a>
     </form>

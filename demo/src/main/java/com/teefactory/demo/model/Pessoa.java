@@ -1,9 +1,16 @@
 package com.teefactory.demo.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
 
@@ -21,6 +28,10 @@ public class Pessoa {
 
     @Column(name = "email")
     private String email;
+
+    @ManyToMany(cascade ={CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "possui", joinColumns = @JoinColumn(name = "pessoa_id"), inverseJoinColumns = @JoinColumn(name = "endereco_id"))
+    private List<Endereco> enderecos = new ArrayList();
 
     public Pessoa(Integer id, String nome, String email) {
         this.id = id;
@@ -59,6 +70,14 @@ public class Pessoa {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Endereco> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
     }
 
 }
