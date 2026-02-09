@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.teefactory.demo.dto.PessoaDTO;
 import com.teefactory.demo.model.Endereco;
 import com.teefactory.demo.model.Pessoa;
 import com.teefactory.demo.repositories.PessoaRepository;
@@ -49,6 +50,14 @@ public class PessoaController {
         ModelAndView mv = new ModelAndView("pessoa-list");
         mv.addObject("nome", nomes);
         return mv;
+    }
+    
+    @GetMapping("/endereco")
+    public ModelAndView pessoas(){
+        List<PessoaDTO> pessoas = pessoaRepository.pessoas(); 
+        ModelAndView mv = new ModelAndView("pessoa-endereco"); 
+        mv.addObject("pessoas", pessoas); 
+        return mv; 
     }
 
 }
