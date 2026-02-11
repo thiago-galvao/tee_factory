@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Adicionar Produto</title>
+
+    <!-- Bootstrap opcional -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+
+    <h2>Adicionar Produto</h2>
+
+    <!-- Mensagem de sucesso -->
+    <div class="alert alert-success"
+         th:if="${successMessage}"
+         th:text="${successMessage}">
+    </div>
+
+    <!-- Formulário -->
+    <form th:action="@{/produto/add}" method="post">
+
+        <div class="form-group">
+            <label for="nome">Nome</label>
+            <input type="text"
+                   id="nome"
+                   name="nome"
+                   class="form-control"
+                   placeholder="Digite o nome do produto"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label for="descricao">Descrição (opcional)</label>
+            <textarea id="descricao"
+                      name="descricao"
+                      class="form-control"
+                      rows="3"
+                      placeholder="Digite a descrição do produto"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="valor">Valor</label>
+            <input type="number"
+                   id="valor"
+                   name="valor"
+                   class="form-control"
+                   placeholder="Digite o valor"
+                   step="0.01"
+                   min="0"
+                   required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Salvar
+        </button>
+
+        <a th:href="@{/produto}" class="btn btn-secondary">
+            Voltar
+        </a>
+    </form>
+
+</div>
+
+</body>
+</html>

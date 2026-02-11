@@ -22,10 +22,4 @@ public class EnderecoController {
     @Autowired 
     private PessoaRepository pessoaRepository; 
 
-    // @GetMapping("/add")
-    // public ModelAndView add(@RequestParam String rua, @RequestParam Integer numero, @RequestParam String bairro, RedirectAttributes redirectAttributes){
-    //     ModelAndView mv = new ModelAndView("endereco-add"); 
-    //     Endereco e = new Endereco(rua, numero, bairro); 
-
-    // }
 }
