@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nova Compra</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+
+    <h2>Registrar Compra</h2>
+
+    <!-- Mensagem de sucesso -->
+    <div class="alert alert-success"
+         th:if="${successMessage}"
+         th:text="${successMessage}">
+    </div>
+
+    <form th:action="@{/compra/add}" method="post">
+
+        <!-- Seleção de Pessoa -->
+        <div class="form-group">
+            <label for="pessoa">Pessoa</label>
+            <select id="pessoa"
+                    name="pessoaId"
+                    class="form-control"
+                    required>
+                <option value="">Selecione uma pessoa</option>
+                <option th:each="p : ${pessoas}"
+                        th:value="${p.id}"
+                        th:text="${p.nome}">
+                </option>
+            </select>
+        </div>
+
+        <hr>
+
+        <h5>Produtos</h5>
+
+        <!-- Container dos produtos -->
+        <div id="produtos-container">
+
+            <div class="form-group produto-item">
+                <label>Produto</label>
+                <select name="produtosIds"
+                        class="form-control"
+                        required>
+                    <option value="">Selecione um produto</option>
+                    <option th:each="prod : ${produtos}"
+                            th:value="${prod.id}"
+                            th:text="${prod.nome}">
+                    </option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- Botão adicionar mais produtos -->
+        <button type="button"
+                class="btn btn-sm btn-success mb-3"
+                onclick="adicionarProduto()">
+            + Adicionar Produto
+        </button>
+
+        <br>
+
+        <button type="submit" class="btn btn-primary">
+            Salvar
+        </button>
+
+        <a th:href="@{/compra/add}" class="btn btn-secondary">
+            Voltar
+        </a>
+
+    </form>
+
+</div>
+
+<!-- Script para adicionar novos selects -->
+<script>
+    function adicionarProduto() {
+        const container = document.getElementById("produtos-container");
+
+        const novoProduto = document.querySelector(".produto-item").cloneNode(true);
+
+        // Limpa o valor selecionado
+        novoProduto.querySelector("select").value = "";
+
+        container.appendChild(novoProduto);
+    }
+</script>
+
+</body>
+</html>

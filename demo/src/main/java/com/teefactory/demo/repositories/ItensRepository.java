@@ -1,0 +1,9 @@
+package com.teefactory.demo.repositories;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.teefactory.demo.model.Itens;
+
+public interface ItensRepository extends JpaRepository<Itens, Integer> {
+
+}

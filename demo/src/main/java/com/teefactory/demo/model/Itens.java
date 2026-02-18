@@ -17,21 +17,36 @@ public class Itens {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id; 
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "produto_id")
-    private Produto produto; 
+    private Produto produto;
 
     @ManyToOne
     @JoinColumn(name = "compra_id")
-    private Compra compra; 
+    private Compra compra;
 
     @Column(name = "preco_unitario", nullable = false)
-    private Double precoUnitario; 
+    private Double precoUnitario;
 
     @Column(name = "quantidade", nullable = false)
-    private Integer quantidade; 
+    private Integer quantidade;
 
+    public Itens(Integer id, Produto produto, Compra compra, Double precoUnitario, Integer quantidade) {
+        this.id = id;
+        this.produto = produto;
+        this.compra = compra;
+        this.precoUnitario = precoUnitario;
+        this.quantidade = quantidade;
+    }
+
+    public Itens(Produto produto, Compra compra, Double precoUnitario, Integer quantidade) {
+        this.produto = produto;
+        this.compra = compra;
+        this.precoUnitario = precoUnitario;
+        this.quantidade = quantidade;
+    }
+    
 
 }
