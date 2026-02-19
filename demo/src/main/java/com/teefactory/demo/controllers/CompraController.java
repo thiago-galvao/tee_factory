@@ -3,7 +3,9 @@ package com.teefactory.demo.controllers;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,7 +40,7 @@ public class CompraController {
     PessoaRepository pessoaRepository;
 
     @Autowired
-    ItensRepository itensRepository; 
+    ItensRepository itensRepository;
 
     @GetMapping("/add")
     public ModelAndView addCompra() {
@@ -49,26 +51,35 @@ public class CompraController {
         mv.addObject("produtos", produtos);
         return mv;
     }
+
     @PostMapping("/add")
-    public String addCompraPost(@ModelAttribute CompraDTO compraDTO, RedirectAttributes ra){
-        Pessoa pessoa = pessoaRepository.findById(compraDTO.getPessoaId()).orElseThrow(); 
-        LocalDateTime data = LocalDateTime.now(); 
-        Double valorTotal = 0.0; 
-        Integer quantidade = 1; 
-        List<Produto> produtos = new ArrayList<>(); 
-        for(Integer i: compraDTO.getProdutosIds()){
-           Produto prod = produtoRepository.findById(i).orElseThrow(); 
-           valorTotal += prod.getValor(); 
-           produtos.add(prod);
+    public String addCompraPost(@ModelAttribute CompraDTO compraDTO, RedirectAttributes ra) {
+        Pessoa pessoa = pessoaRepository.findById(compraDTO.getPessoaId()).orElseThrow();
+        Map<Produto, Integer> mapProdutos = new HashMap<>();
+        LocalDateTime data = LocalDateTime.now();
+        Double valorTotal = 0.0;
+        List<Produto> produtos = new ArrayList<>();
+        for (Integer i : compraDTO.getProdutosIds()) {
+            Produto prod = produtoRepository.findById(i).orElseThrow();
+            valorTotal += prod.getValor();
+            produtos.add(prod);
+            mapProdutos.put(prod, mapProdutos.getOrDefault(prod, 0) + 1);
         }
-        Compra compra = new Compra(data, valorTotal, "Cartao", pessoa); 
-        compraRepository.save(compra); 
-        List<Itens> itens = new ArrayList<>(); 
-        for(Produto p: produtos){
-            Itens item = new Itens(p,compra, p.getValor(),quantidade); 
-            itensRepository.save(item); 
+        Compra compra = new Compra(data, valorTotal, "Cartao", pessoa);
+        compraRepository.save(compra);
+        List<Itens> itens = new ArrayList<>();
+        for (Map.Entry<Produto, Integer> entry : mapProdutos.entrySet()) {
+            Produto prod = entry.getKey();
+            Itens item = new Itens(prod, compra, prod.getValor(), entry.getValue());
+            itens.add(item);
         }
-        ra.addFlashAttribute("successMessage", "Compra registrada com sucesso"); 
+
+        for (Itens i : itens) {
+            itensRepository.save(i);
+            System.out.println(i.getProduto().getNome());
+        }
+
+        ra.addFlashAttribute("successMessage", "Compra registrada com sucesso");
         return "redirect:/compra/add";
 
     }
