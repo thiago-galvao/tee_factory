@@ -11,47 +11,68 @@ import com.teefactory.demo.roles.UserRole;
 
 import jakarta.persistence.*;
 
+@Entity
 @Table(name = "tee_users")
 
-public class User implements UserDetails  {
-    private Integer id;
-    private String login;
-    private String password;
-    private UserRole role; 
+public class User implements UserDetails {
 
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    private Integer id;
+
+    @Column(name = "login", nullable = false)
+    private String login;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "role", nullable = true)
+    private UserRole role;
+
+    public User() {
+    }
 
     public User(String login, String password) {
         this.login = login;
         this.password = password;
     }
+
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
     public String getLogin() {
         return login;
     }
+
     public void setLogin(String login) {
         this.login = login;
     }
+
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-       if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-       else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == UserRole.ADMIN)
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
+
     @Override
     public String getUsername() {
-      return login; 
-    } 
+        return login;
+    }
 
-
-    
 }
