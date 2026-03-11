@@ -18,7 +18,7 @@ services:
     working_dir: /app
     volumes:
       - .:/app
-      - ~/.m2:/root/.m2
+      - C:/Users/Tarek/.m2:/root/.m2
     command: mvn spring-boot:run
     ports:
       - "8080:8080"
