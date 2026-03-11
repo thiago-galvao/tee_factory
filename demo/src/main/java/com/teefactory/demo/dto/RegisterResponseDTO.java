@@ -2,6 +2,5 @@ package com.teefactory.demo.dto;
 
 import com.teefactory.demo.roles.UserRole;
 
-public record LoginRequestDTO(String login, String password) {
-    
+public record RegisterResponseDTO(String login, String password) {
 }

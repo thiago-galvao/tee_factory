@@ -1,4 +1,4 @@
-package com.teefactory.demo.security;
+package com.teefactory.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,8 @@ public class SecurityConfig {
         return http.csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
-                        authorize -> authorize.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                        authorize -> authorize.requestMatchers(HttpMethod.POST, "/auth/register").permitAll().
+                        requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/auth/hello").permitAll()
                                 .anyRequest().authenticated())
                 .build();

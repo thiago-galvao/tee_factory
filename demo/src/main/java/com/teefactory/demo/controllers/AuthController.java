@@ -2,19 +2,22 @@ package com.teefactory.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.teefactory.demo.config.TokenConfig;
 import com.teefactory.demo.dto.LoginRequestDTO;
 import com.teefactory.demo.dto.LoginResponseDTO;
+import com.teefactory.demo.dto.RegisterRequestDTO;
+import com.teefactory.demo.dto.RegisterResponseDTO;
 import com.teefactory.demo.model.User;
 import com.teefactory.demo.repositories.UserRepository;
 
@@ -31,15 +34,31 @@ public class AuthController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    TokenConfig tokenConfig; 
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO register ){
+
+       UsernamePasswordAuthenticationToken userAndPass = new UsernamePasswordAuthenticationToken(register.login(), register.password());
+        Authentication authentication = authenticationManager.authenticate(userAndPass); 
+
+        User user = (User) authentication.getPrincipal(); 
+        String token = tokenConfig.generateToken(user); 
+        return ResponseEntity.ok(new LoginResponseDTO(token)); 
+    }
+
     @PostMapping("/register")
-    public ResponseEntity<LoginResponseDTO> registrer(@RequestBody LoginRequestDTO loginRequest) {
+    public ResponseEntity<RegisterResponseDTO> registrer(@RequestBody RegisterRequestDTO registerRequest) {
         User user = new User();
-        user.setLogin(loginRequest.login());
-        user.setPassword(passwordEncoder.encode(loginRequest.password()));
+        user.setLogin(registerRequest.login());
+        user.setPassword(passwordEncoder.encode(registerRequest.password()));
+        user.setRole(registerRequest.role());
+        
 
         userRepository.save(user);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new LoginResponseDTO(user.getLogin(), user.getPassword()));
+                .body(new RegisterResponseDTO(user.getLogin(), user.getPassword()));
     }
 
     @GetMapping("/hello")
