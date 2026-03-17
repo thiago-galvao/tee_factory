@@ -23,12 +23,12 @@ public class SecurityConfig {
         return http.csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
-                        authorize -> authorize.requestMatchers(HttpMethod.POST, "/auth/register").permitAll().
-                        requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/auth/hello").permitAll()
-                                .anyRequest().authenticated())
-                .build();
+                        authorize -> authorize
+                        .requestMatchers("/auth/register").permitAll()
+                        .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("/compra").permitAll()
+                        .anyRequest().authenticated())
+                        .build();
     }
 
     @Bean
