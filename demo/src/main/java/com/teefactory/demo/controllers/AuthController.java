@@ -63,16 +63,17 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute RegisterRequestDTO registerRequest, RedirectAttributes ra) {
+    public ModelAndView register(@ModelAttribute RegisterRequestDTO registerRequest, RedirectAttributes ra) {
         User user = new User();
+        ModelAndView mv = new ModelAndView("register-user");
         UserRole role = UserRole.USER; 
         user.setLogin(registerRequest.login());
         user.setPassword(passwordEncoder.encode(registerRequest.password()));
         user.setRole(role);
         
         userRepository.save(user);
-        ra.addFlashAttribute("successMessage", "Registrado com Sucesso"); 
-        return "redirect:/auth/register"; 
+        mv.addObject("successMessage", "Registrado com Sucesso");
+        return mv;
     }
 
     @GetMapping("/hello")
